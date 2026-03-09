@@ -1,4 +1,4 @@
-Fiscal_Year,Borough,Award,Council_District_num,Sector,Category,scaled_Awards
+Fiscal_Year,Borough,Award,Council_District_num,Sector,Category,transformed_Awards
 2019,X,250000,16.0,Housing & Dev,Community/Housing,3.4293771862236113
 2019,K,3640000,37.0,Health & Human Svcs,"Education, Infrastructure/Renovation",3.4851420995962124
 2019,M,425000,5.0,Education,"Education, Infrastructure/Renovation",3.444009455685779
