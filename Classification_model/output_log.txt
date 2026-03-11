@@ -1,0 +1,94 @@
+﻿======================================================================
+  Loading & preparing data
+======================================================================
+  Engineering interaction features ...
+  Engineered features: 122 total
+Features:  122
+Classes:   ['high', 'low', 'mid', 'mid-high', 'mid-low']
+Train:     8272  |  Val: 920  |  Test: 2299
+
+======================================================================
+  Tuning XGBoost (RandomizedSearchCV + early stopping)
+======================================================================
+  Best CV accuracy: 0.4975
+  Best params: {'colsample_bylevel': np.float64(0.6213), 'colsample_bytree': np.float64(0.7148), 'gamma': np.float64(0.1633), 'learning_rate': 0.05, 'max_depth': 8, 'min_child_weight': 5, 'n_estimators': 1500, 'reg_alpha': np.float64(0.1807), 'reg_lambda': np.float64(0.7067), 'subsample': np.float64(0.7594)}
+
+------------------------------------------------------------
+  XGBoost
+------------------------------------------------------------
+  Accuracy  : 0.5128
+  Precision : 0.5099
+  Recall    : 0.5127
+  Specificity: 0.8782
+  F1-Score  : 0.5091
+  ROC-AUC   : 0.8047
+  [saved] D:\user\ML\ML_Project\Classification_model\plots\01_XGBoost_confusion.png
+  [saved] D:\user\ML\ML_Project\Classification_model\plots\02_XGBoost_roc.png
+
+======================================================================
+  Tuning LightGBM (RandomizedSearchCV + early stopping)
+======================================================================
+  Best CV accuracy: 0.5004
+  Best params: {'colsample_bytree': np.float64(0.8486), 'learning_rate': 0.05, 'max_depth': 7, 'min_child_samples': 16, 'n_estimators': 2000, 'num_leaves': 60, 'reg_alpha': np.float64(1.7766), 'reg_lambda': np.float64(1.7974), 'subsample': np.float64(0.6427)}
+
+------------------------------------------------------------
+  LightGBM
+------------------------------------------------------------
+  Accuracy  : 0.5094
+  Precision : 0.5059
+  Recall    : 0.5092
+  Specificity: 0.8773
+  F1-Score  : 0.5069
+  ROC-AUC   : 0.8037
+  [saved] D:\user\ML\ML_Project\Classification_model\plots\03_LightGBM_confusion.png
+  [saved] D:\user\ML\ML_Project\Classification_model\plots\04_LightGBM_roc.png
+
+======================================================================
+  Training Stacking Ensemble (6 base learners -> GBM meta)
+======================================================================
+
+------------------------------------------------------------
+  Stacking Ensemble
+------------------------------------------------------------
+  Accuracy  : 0.5107
+  Precision : 0.5159
+  Recall    : 0.5105
+  Specificity: 0.8777
+  F1-Score  : 0.5111
+  ROC-AUC   : 0.8085
+  [saved] D:\user\ML\ML_Project\Classification_model\plots\05_Stacking Ensemble_confusion.png
+  [saved] D:\user\ML\ML_Project\Classification_model\plots\06_Stacking Ensemble_roc.png
+
+======================================================================
+  Training Weighted Voting Ensemble
+======================================================================
+
+------------------------------------------------------------
+  Voting Ensemble
+------------------------------------------------------------
+  Accuracy  : 0.5094
+  Precision : 0.5053
+  Recall    : 0.5092
+  Specificity: 0.8773
+  F1-Score  : 0.5066
+  ROC-AUC   : 0.8043
+  [saved] D:\user\ML\ML_Project\Classification_model\plots\07_Voting Ensemble_confusion.png
+  [saved] D:\user\ML\ML_Project\Classification_model\plots\08_Voting Ensemble_roc.png
+  [saved] D:\user\ML\ML_Project\Classification_model\plots\09_xgb_feature_importance.png
+  [saved] D:\user\ML\ML_Project\Classification_model\plots\10_combined_roc.png
+
+================================================================================
+  FINAL ADVANCED MODEL RANKING
+================================================================================
+                   Accuracy  Precision  Recall (Sensitivity)  Specificity (TNR)  F1-Score   ROC-AUC
+XGBoost            0.512832   0.509850              0.512652           0.878211  0.509136  0.804694
+Stacking Ensemble  0.510657   0.515934              0.510490           0.877671  0.511054  0.808527
+LightGBM           0.509352   0.505884              0.509187           0.877343  0.506855  0.803749
+Voting Ensemble    0.509352   0.505323              0.509183           0.877343  0.506560  0.804296
+
+  Best model by Accuracy : XGBoost  (0.5128)
+  Best model by ROC-AUC : Stacking Ensemble  (0.8085)
+================================================================================
+  [saved] D:\user\ML\ML_Project\Classification_model\plots\11_comparison_bar.png
+
+Done! All advanced models trained and evaluated.

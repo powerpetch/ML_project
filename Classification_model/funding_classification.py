@@ -9,7 +9,7 @@ from sklearn.metrics import (
     roc_auc_score,
     roc_curve,
 )
-from sklearn.preprocessing import StandardScaler, label_binarize
+from sklearn.preprocessing import PowerTransformer, label_binarize
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 
@@ -63,7 +63,11 @@ def create_funding_levels(df, award_col="Award", year_col="Fiscal_Year"):
         return group
 
     df = df.copy()
+    # Preserve year_col: groupby can drop it in newer pandas
+    saved_year = df[year_col].copy()
     df = df.groupby(year_col, group_keys=False).apply(_per_year)
+    if year_col not in df.columns:
+        df[year_col] = saved_year
     return df
 
 
@@ -85,11 +89,11 @@ def select_features(df):
     """
     df = df.copy()
 
-    # แปลง Fiscal_Year ให้เป็นตัวเลข
-    df["Fiscal_Year"] = df["Fiscal_Year"].apply(parse_fiscal_year)
+    # Fix corrupted Council_District_num (NYC has 51 districts max)
+    df["Council_District_num"] = df["Council_District_num"].clip(upper=51)
 
     # one-hot encoding สำหรับ Borough ถ้ายังไม่แปลง
-    if df["Borough"].dtype == "object":
+    if not pd.api.types.is_numeric_dtype(df["Borough"]):
         borough_dummies = pd.get_dummies(df["Borough"], prefix="Borough")
         df = pd.concat([df, borough_dummies], axis=1)
 
@@ -207,8 +211,8 @@ def train_and_evaluate():
     print("ใช้ฟีเจอร์ทั้งหมด:", len(feature_cols))
     print("คลาส:", label_to_int)
 
-    # scaling ฟีเจอร์
-    scaler = StandardScaler()
+    # scaling ฟีเจอร์ (Yeo-Johnson: generalized Box-Cox that handles zeros)
+    scaler = PowerTransformer(method='yeo-johnson', standardize=True)
     X_scaled = scaler.fit_transform(X.values)
 
     X_train, X_test, y_train, y_test = train_test_split(
